@@ -73,4 +73,8 @@ public class Task {
         this.description = description;
     }
 
+    public Long getEmployee_id() {
+        return this.employee.getId();
+    }
+
 }
