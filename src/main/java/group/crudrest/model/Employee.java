@@ -2,6 +2,8 @@ package group.crudrest.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -45,6 +47,7 @@ public class Employee {
 	}
 
 	@OneToMany(mappedBy = "employee")
+	@JsonIgnore
 	private List<Task> tasks;
 
 	public Long getId() {
