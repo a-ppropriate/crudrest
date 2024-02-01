@@ -5,14 +5,23 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import jakarta.validation.constraints.NotBlank;
+//import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+
 @Entity
 public class Employee {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotBlank(message = "Name is mandatory")
 	private String name;
 	private String address;
+
+	@NotBlank(message = "Email is mandatory")
+	@Pattern(regexp = "^[\\w!#$%&`*+/=?`{|}~^-]+(?:\\.[\\w!#$%&`*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", message = "Email seems to be invalid") //Regex is from some java spring boot validation example.
     private String email;
 
 	protected Employee() {}
