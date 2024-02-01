@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import group.crudrest.repository.EmployeeRepository;
 import jakarta.validation.Valid;
 import group.crudrest.model.Employee;
+import group.crudrest.model.Task;
 import group.crudrest.exceptions.EmployeeNotFoundException;
 
 import org.springframework.http.HttpStatus;
@@ -77,6 +78,15 @@ class EmployeeController {
   @DeleteMapping("/employees/{id}")
   void deleteEmployee(@PathVariable Long id) {
     repository.deleteById(id);
+  }
+
+  //Tasks:
+  @GetMapping("/employees/{id}/tasks/")
+  List<Task> tasksList(@PathVariable Long id) {
+    return repository.findById(id).map(
+      employee -> employee.getTasks()
+    )
+      .orElseThrow(() -> new EmployeeNotFoundException(id));
   }
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)
