@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.http.MediaType;
-
 import group.crudrest.repository.TaskRepository;
 import jakarta.validation.Valid;
 import group.crudrest.model.Task;
@@ -24,7 +22,6 @@ import group.crudrest.exceptions.TaskNotFoundException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
-
 
 @RestController
 class TaskController {
@@ -34,7 +31,6 @@ class TaskController {
   TaskController(TaskRepository repository) {
     this.repository = repository;
   }
-
 
   @GetMapping("/tasks")
   List<Task> all() {
@@ -46,26 +42,23 @@ class TaskController {
     return repository.save(newTask);
   }
 
-  // Single item
-  
   @GetMapping("/tasks/{id}")
   Task one(@PathVariable Long id) {
-    
+
     return repository.findById(id)
-      .orElseThrow(() -> new TaskNotFoundException(id));
+        .orElseThrow(() -> new TaskNotFoundException(id));
   }
 
   @PutMapping("/tasks/{id}")
   Task replaceTask(@Valid @RequestBody Task newTask, @PathVariable Long id) {
-    
+
     return repository.findById(id)
-      .map(task -> {
+        .map(task -> {
           task.setTitle(newTask.getTitle());
           task.setDescription(newTask.getDescription());
-          //task.setEmail(newTask.getEmail());
 
-        return repository.save(task);
-      }).orElseThrow(() -> new TaskNotFoundException(id));
+          return repository.save(task);
+        }).orElseThrow(() -> new TaskNotFoundException(id));
   }
 
   @DeleteMapping("/tasks/{id}")
@@ -76,12 +69,12 @@ class TaskController {
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
-    }
+    Map<String, String> errors = new HashMap<>();
+    ex.getBindingResult().getAllErrors().forEach((error) -> {
+      String fieldName = ((FieldError) error).getField();
+      String errorMessage = error.getDefaultMessage();
+      errors.put(fieldName, errorMessage);
+    });
+    return errors;
+  }
 }

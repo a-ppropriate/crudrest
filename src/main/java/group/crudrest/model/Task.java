@@ -15,9 +15,9 @@ import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Task {
-    
+
     @Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message = "Title can not be blank")
@@ -26,45 +26,51 @@ public class Task {
     @NotBlank(message = "Description can not be blank")
     private String description;
 
-    /*@NotBlank(message = "Employee id can not be blank")
-    @Column(name="employee_id")
-    private Long employeeId;*/
+    /*
+     * @NotBlank(message = "Employee id can not be blank")
+     * 
+     * @Column(name="employee_id")
+     * private Long employeeId;
+     */
 
     @ManyToOne
-    @JoinColumn(name="employee_id", nullable=false)
+    @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
-    protected Task() {};
-    
-    public Task(String title, String description, Long employee_id){
+    protected Task() {
+    };
+
+    public Task(String title, String description, Long employee_id) {
         this.title = title;
-		this.description = description;
-        //this.employee_id = employee_id;
+        this.description = description;
+        // this.employee_id = employee_id;
     };
 
     @Override
-	public String toString() {
-		return String.format(
-				"Task[id=%d, name='%s', title='%s', description='%s']",
-				id, title, description);
-	}
+    public String toString() {
+        return String.format(
+                "Task[id=%d, name='%s', title='%s', description='%s']",
+                id, title, description);
+    }
 
     public Long getId() {
-		return id;
-	}
+        return id;
+    }
+
     public String getTitle() {
-		return title;
-	}
+        return title;
+    }
+
     public void setTitle(String title) {
-		this.title = title;
-	}
+        this.title = title;
+    }
 
     public String getDescription() {
-		return description;
-	}
-    public void setDescription(String description) {
-		this.description = description;
-	}
+        return description;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
 }
