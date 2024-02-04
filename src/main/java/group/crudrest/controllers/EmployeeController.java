@@ -15,12 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import group.crudrest.repository.EmployeeRepository;
 import group.crudrest.services.EmployeeService;
 import jakarta.validation.Valid;
 import group.crudrest.model.Employee;
 import group.crudrest.model.Task;
-import group.crudrest.exceptions.EmployeeNotFoundException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +32,6 @@ class EmployeeController {
 
   @Autowired
   ModelMapper modelMapper;
-
-  // private final EmployeeRepository repository;
-
-  // EmployeeController(EmployeeRepository repository) {
-  // this.repository = repository;
-  // }
 
   @GetMapping("/employees")
   List<Employee> all() {
@@ -64,10 +56,8 @@ class EmployeeController {
   @DeleteMapping("/employees/{id}")
   void deleteEmployee(@PathVariable Long id) {
     employeeService.deleteEmployee(id);
-    // employeeRepository.deleteById(id);
   }
 
-  // Tasks:
   @GetMapping("/employees/{id}/tasks/")
   List<Task> tasksList(@PathVariable Long id) {
     return employeeService.getTaskList(id);

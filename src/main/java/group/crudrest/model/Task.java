@@ -1,7 +1,5 @@
 package group.crudrest.model;
 
-import jakarta.persistence.Column;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,13 +23,6 @@ public class Task {
 
     @NotBlank(message = "Description can not be blank")
     private String description;
-
-    /*
-     * @NotBlank(message = "Employee id can not be blank")
-     * 
-     * @Column(name="employee_id")
-     * private Long employeeId;
-     */
 
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
