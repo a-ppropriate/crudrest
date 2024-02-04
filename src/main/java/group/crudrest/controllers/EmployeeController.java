@@ -16,64 +16,61 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import group.crudrest.repository.EmployeeRepository;
+import group.crudrest.services.EmployeeService;
 import jakarta.validation.Valid;
 import group.crudrest.model.Employee;
 import group.crudrest.model.Task;
 import group.crudrest.exceptions.EmployeeNotFoundException;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 
 @RestController
 class EmployeeController {
+  @Autowired
+  EmployeeService employeeService;
 
-  private final EmployeeRepository repository;
+  @Autowired
+  ModelMapper modelMapper;
 
-  EmployeeController(EmployeeRepository repository) {
-    this.repository = repository;
-  }
+  // private final EmployeeRepository repository;
+
+  // EmployeeController(EmployeeRepository repository) {
+  // this.repository = repository;
+  // }
 
   @GetMapping("/employees")
   List<Employee> all() {
-    return repository.findAll();
+    return employeeService.getEmployees();
   }
 
   @PostMapping("/employees")
   Employee newEmployee(@Valid @RequestBody Employee newEmployee) {
-    return repository.save(newEmployee);
+    return employeeService.createEmployee(newEmployee);
   }
 
   @GetMapping("/employees/{id}")
   Employee one(@PathVariable Long id) {
-
-    return repository.findById(id)
-        .orElseThrow(() -> new EmployeeNotFoundException(id));
+    return employeeService.getEmployee(id);
   }
 
   @PutMapping("/employees/{id}")
   Employee replaceEmployee(@Valid @RequestBody Employee newEmployee, @PathVariable Long id) {
-
-    return repository.findById(id)
-        .map(employee -> {
-          employee.setName(newEmployee.getName());
-          employee.setAddress(newEmployee.getAddress());
-          employee.setEmail(newEmployee.getEmail());
-
-          return repository.save(employee);
-        }).orElseThrow(() -> new EmployeeNotFoundException(id));
+    return employeeService.updateEmployee(newEmployee, id);
   }
 
   @DeleteMapping("/employees/{id}")
   void deleteEmployee(@PathVariable Long id) {
-    repository.deleteById(id);
+    employeeService.deleteEmployee(id);
+    // employeeRepository.deleteById(id);
   }
 
   // Tasks:
   @GetMapping("/employees/{id}/tasks/")
   List<Task> tasksList(@PathVariable Long id) {
-    return repository.findById(id).map(
-        employee -> employee.getTasks())
-        .orElseThrow(() -> new EmployeeNotFoundException(id));
+    return employeeService.getTaskList(id);
   }
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)

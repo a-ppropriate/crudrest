@@ -15,55 +15,43 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import group.crudrest.repository.TaskRepository;
+import group.crudrest.services.TaskService;
 import jakarta.validation.Valid;
 import group.crudrest.model.Task;
-import group.crudrest.exceptions.TaskNotFoundException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 
 @RestController
 class TaskController {
-
-  private final TaskRepository repository;
-
-  TaskController(TaskRepository repository) {
-    this.repository = repository;
-  }
+  @Autowired
+  TaskService taskService;
 
   @GetMapping("/tasks")
   List<Task> all() {
-    return repository.findAll();
+    return taskService.getTasks();
   }
 
   @PostMapping("/tasks")
   Task newTask(@Valid @RequestBody Task newTask) {
-    return repository.save(newTask);
+    return taskService.createTask(newTask);
   }
 
   @GetMapping("/tasks/{id}")
   Task one(@PathVariable Long id) {
-
-    return repository.findById(id)
-        .orElseThrow(() -> new TaskNotFoundException(id));
+    return taskService.getTask(id);
   }
 
   @PutMapping("/tasks/{id}")
   Task replaceTask(@Valid @RequestBody Task newTask, @PathVariable Long id) {
 
-    return repository.findById(id)
-        .map(task -> {
-          task.setTitle(newTask.getTitle());
-          task.setDescription(newTask.getDescription());
-
-          return repository.save(task);
-        }).orElseThrow(() -> new TaskNotFoundException(id));
+    return taskService.updateTask(newTask, id);
   }
 
   @DeleteMapping("/tasks/{id}")
   void deleteTask(@PathVariable Long id) {
-    repository.deleteById(id);
+    taskService.deleteTask(id);
   }
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)
