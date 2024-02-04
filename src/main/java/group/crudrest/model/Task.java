@@ -77,4 +77,7 @@ public class Task {
         return this.employee.getId();
     }
 
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
 }
