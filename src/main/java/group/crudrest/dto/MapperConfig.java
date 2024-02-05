@@ -24,12 +24,16 @@ public class MapperConfig {
     @Bean
     ModelMapper getModelMapper() {
         ModelMapper mapper = new ModelMapper();
-        configDTO2task(mapper);
+        taskDTO2task(mapper);
+        task2taskDTO(mapper);
         return mapper;
     }
 
-    private void configDTO2task(ModelMapper mapper) {
+    private void taskDTO2task(ModelMapper mapper) {
         TypeMap<TaskDTO, Task> propertyMapper = mapper.createTypeMap(TaskDTO.class, Task.class);
+
+        propertyMapper.addMappings(
+                mapping -> mapping.map(src -> employeeRepository.findById(src.getEmployee_id()), Task::setEmployee));
 
         // propertyMapper.addMapping(src -> employeeRepository.findById(
         // src.getEmployee_id()), (dest, v) -> dest.setEmployee(v));
@@ -38,5 +42,13 @@ public class MapperConfig {
         // src.getEmployee_id()).orElseThrow(() -> {
         // throw new EmployeeNotFoundException(src.getEmployee_id());
         // }), (dest, v) -> dest.setEmployee(v));
+
+    }
+
+    private void task2taskDTO(ModelMapper mapper) {
+        TypeMap<Task, TaskDTO> propertyMapper = mapper.createTypeMap(Task.class, TaskDTO.class);
+
+        propertyMapper.addMappings(
+                mapping -> mapping.map(src -> src.getEmployee_id(), TaskDTO::setEmployee_id));
     }
 }

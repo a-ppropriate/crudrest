@@ -9,22 +9,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import group.crudrest.dto.TaskDTO;
 import group.crudrest.model.Task;
 import jakarta.validation.Valid;
 
 public interface ITaskController {
 
     @GetMapping("/tasks")
-    List<Task> all();
+    List<TaskDTO> all();
 
     @PostMapping("/tasks")
-    Task newTask(@Valid @RequestBody Task newTask);
+    TaskDTO newTask(@Valid @RequestBody TaskDTO newTask);
 
     @GetMapping("/tasks/{id}")
-    Task one(@PathVariable Long id);
+    TaskDTO one(@PathVariable Long id);
 
     @PutMapping("/tasks/{id}")
-    Task replaceTask(@Valid @RequestBody Task newTask, @PathVariable Long id);
+    TaskDTO replaceTask(@Valid @RequestBody TaskDTO newTask, @PathVariable Long id);
 
     @DeleteMapping("/tasks/{id}")
     void deleteTask(@PathVariable Long id);

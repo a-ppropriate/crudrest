@@ -31,10 +31,10 @@ public class Task {
     protected Task() {
     };
 
-    public Task(String title, String description, Long employee_id) {
+    public Task(String title, String description, Employee employee) {
         this.title = title;
         this.description = description;
-        // this.employee_id = employee_id;
+        this.employee = employee;
     };
 
     @Override
