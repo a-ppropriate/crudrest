@@ -7,9 +7,9 @@ import org.modelmapper.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.config.Task;
 
 import group.crudrest.model.Employee;
+import group.crudrest.model.Task;
 import group.crudrest.exceptions.*;
 import group.crudrest.repository.*;
 
