@@ -5,18 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import group.crudrest.services.EmployeeService;
 import jakarta.validation.Valid;
+import group.crudrest.controllers.interfaces.IEmployeeController;
 import group.crudrest.model.Employee;
 import group.crudrest.model.Task;
 
@@ -26,40 +23,40 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 
 @RestController
-class EmployeeController {
+class EmployeeController implements IEmployeeController {
   @Autowired
   EmployeeService employeeService;
 
   @Autowired
   ModelMapper modelMapper;
 
-  @GetMapping("/employees")
-  List<Employee> all() {
+  @Override
+  public List<Employee> all() {
     return employeeService.getEmployees();
   }
 
-  @PostMapping("/employees")
-  Employee newEmployee(@Valid @RequestBody Employee newEmployee) {
+  @Override
+  public Employee newEmployee(@Valid @RequestBody Employee newEmployee) {
     return employeeService.createEmployee(newEmployee);
   }
 
-  @GetMapping("/employees/{id}")
-  Employee one(@PathVariable Long id) {
+  @Override
+  public Employee one(@PathVariable Long id) {
     return employeeService.getEmployee(id);
   }
 
-  @PutMapping("/employees/{id}")
-  Employee replaceEmployee(@Valid @RequestBody Employee newEmployee, @PathVariable Long id) {
+  @Override
+  public Employee replaceEmployee(@Valid @RequestBody Employee newEmployee, @PathVariable Long id) {
     return employeeService.updateEmployee(newEmployee, id);
   }
 
-  @DeleteMapping("/employees/{id}")
-  void deleteEmployee(@PathVariable Long id) {
+  @Override
+  public void deleteEmployee(@PathVariable Long id) {
     employeeService.deleteEmployee(id);
   }
 
-  @GetMapping("/employees/{id}/tasks/")
-  List<Task> tasksList(@PathVariable Long id) {
+  @Override
+  public List<Task> tasksList(@PathVariable Long id) {
     return employeeService.getTaskList(id);
   }
 
