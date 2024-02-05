@@ -26,8 +26,8 @@ class TaskController implements ITaskController {
   @Autowired
   TaskService taskService;
 
-  @GetMapping("/tasks")
-  List<Task> all() {
+  @Override
+  public List<Task> all() {
     return taskService.getTasks();
   }
 
