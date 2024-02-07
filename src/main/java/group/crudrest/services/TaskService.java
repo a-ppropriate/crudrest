@@ -34,6 +34,7 @@ public class TaskService {
                 .map(task -> {
                     task.setTitle(newTask.getTitle());
                     task.setDescription(newTask.getDescription());
+                    task.setEmployee(newTask.getEmployee());
 
                     return taskRepository.save(task);
                 }).orElseThrow(() -> new TaskNotFoundException(id));
