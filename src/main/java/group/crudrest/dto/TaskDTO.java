@@ -34,4 +34,11 @@ public class TaskDTO {
         this.employee_id = employee_id;
     }
 
+    @Override
+    public String toString() {
+        return String.format(
+                "Task[id=%d, title='%s', description='%s', employee_id='%d']",
+                id, title, description, employee_id);
+    }
+
 }
