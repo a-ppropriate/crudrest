@@ -1,6 +1,7 @@
 package group.crudrest.services;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class EmployeeService {
     }
 
     public Employee getEmployee(Long id) {
+        Objects.requireNonNull(id);
         return employeeRepository.findById(id)
                 .orElseThrow(() -> {
                     throw new EmployeeNotFoundException(id);
@@ -28,14 +30,17 @@ public class EmployeeService {
     }
 
     public Employee createEmployee(Employee employee) {
+        Objects.requireNonNull(employee);
         return employeeRepository.save(employee);
     }
 
     public void deleteEmployee(Long id) {
+        Objects.requireNonNull(id);
         employeeRepository.deleteById(id);
     }
 
     public Employee updateEmployee(Employee newEmployee, Long id) {
+        Objects.requireNonNull(id);
         return employeeRepository.findById(id)
                 .map(employee -> {
                     employee.setName(newEmployee.getName());
@@ -47,6 +52,7 @@ public class EmployeeService {
     }
 
     public List<Task> getTaskList(@PathVariable Long id) {
+        Objects.requireNonNull(id);
         return employeeRepository.findById(id).map(
                 employee -> employee.getTasks())
                 .orElseThrow(() -> new EmployeeNotFoundException(id));

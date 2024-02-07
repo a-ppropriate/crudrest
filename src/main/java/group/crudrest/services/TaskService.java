@@ -1,6 +1,7 @@
 package group.crudrest.services;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,16 +21,18 @@ public class TaskService {
     }
 
     public Task getTask(Long id) {
+        Objects.requireNonNull(id);
         return taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(id));
     }
 
     public Task createTask(Task newTask) {
+        Objects.requireNonNull(newTask);
         return taskRepository.save(newTask);
     }
 
     public Task updateTask(Task newTask, @PathVariable Long id) {
-
+        Objects.requireNonNull(id);
         return taskRepository.findById(id)
                 .map(task -> {
                     task.setTitle(newTask.getTitle());
@@ -41,6 +44,7 @@ public class TaskService {
     }
 
     public void deleteTask(Long id) {
+        Objects.requireNonNull(id);
         taskRepository.deleteById(id);
     }
 
