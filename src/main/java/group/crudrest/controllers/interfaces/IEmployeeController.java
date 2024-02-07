@@ -10,28 +10,28 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import group.crudrest.model.Employee;
-import group.crudrest.model.Task;
+import group.crudrest.dto.EmployeeDTO;
+import group.crudrest.dto.TaskDTO;
 import jakarta.validation.Valid;
 
 @RestController
 public interface IEmployeeController {
 
     @GetMapping("/employees")
-    List<Employee> all();
+    List<EmployeeDTO> all();
 
     @PostMapping("/employees")
-    Employee newEmployee(@Valid @RequestBody Employee newEmployee);
+    EmployeeDTO newEmployee(@Valid @RequestBody EmployeeDTO newEmployee);
 
     @GetMapping("/employees/{id}")
-    Employee one(@PathVariable Long id);
+    EmployeeDTO one(@PathVariable Long id);
 
     @PutMapping("/employees/{id}")
-    Employee replaceEmployee(@Valid @RequestBody Employee newEmployee, @PathVariable Long id);
+    EmployeeDTO replaceEmployee(@Valid @RequestBody EmployeeDTO newEmployee, @PathVariable Long id);
 
     @DeleteMapping("/employees/{id}")
     void deleteEmployee(@PathVariable Long id);
 
     @GetMapping("/employees/{id}/tasks/")
-    List<Task> tasksList(@PathVariable Long id);
+    List<TaskDTO> tasksList(@PathVariable Long id);
 }
