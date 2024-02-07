@@ -1,9 +1,15 @@
 package group.crudrest.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class TaskDTO {
     private Long id;
+    @NotBlank(message = "Title can not be blank")
     private String title;
+    @NotBlank(message = "Description can not be blank")
     private String description;
+    @NotNull(message = "Employee id can not be null")
     private Long employee_id;
 
     public Long getId() {
