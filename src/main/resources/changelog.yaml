@@ -1,6 +1,6 @@
 databaseChangeLog:
 - changeSet:
-    id: 1707054234556-1
+    id: 1707303155571-1
     author: aa (generated)
     changes:
     - createTable:
@@ -28,7 +28,7 @@ databaseChangeLog:
             type: BIGINT
         tableName: employee
 - changeSet:
-    id: 1707054234556-2
+    id: 1707303155571-2
     author: aa (generated)
     changes:
     - createTable:
@@ -52,11 +52,13 @@ databaseChangeLog:
             name: description
             type: VARCHAR(255)
         - column:
+            constraints:
+              nullable: false
             name: employee_id
             type: BIGINT
         tableName: task
 - changeSet:
-    id: 1707054234556-3
+    id: 1707303155571-3
     author: aa (generated)
     changes:
     - addForeignKeyConstraint:
