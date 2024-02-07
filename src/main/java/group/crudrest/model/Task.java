@@ -39,8 +39,8 @@ public class Task {
     @Override
     public String toString() {
         return String.format(
-                "Task[id=%d, name='%s', title='%s', description='%s']",
-                id, title, description);
+                "Task[id=%d, title='%s', description='%s', employee='%s']",
+                id, title, description, employee);
     }
 
     public Long getId() {
