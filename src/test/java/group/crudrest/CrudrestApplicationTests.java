@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import group.crudrest.dto.TaskDTO;
-import group.crudrest.exceptions.EmployeeNotFoundException;
+
 import group.crudrest.model.Employee;
 import group.crudrest.model.Task;
 import group.crudrest.repository.EmployeeRepository;
@@ -41,7 +41,6 @@ class CrudrestApplicationTests {
 
 		assertEquals(taskDTO.getTitle(), task.getTitle());
 		assertEquals(taskDTO.getDescription(), task.getDescription());
-		// assertEquals(employee, task.getEmployee());
 		assertEquals(employee.getId(), task.getEmployee_id());
 		assertEquals(taskDTO.getEmployee_id(), employee.getId());
 		assertEquals(task.getEmployee_id(), employee.getId());
@@ -61,7 +60,6 @@ class CrudrestApplicationTests {
 
 		assertEquals(taskDTO.getTitle(), task.getTitle());
 		assertEquals(taskDTO.getDescription(), task.getDescription());
-		// assertEquals(employee, task.getEmployee());
 		assertEquals(employee.getId(), task.getEmployee_id());
 		assertEquals(taskDTO.getEmployee_id(), employee.getId());
 		assertEquals(task.getEmployee_id(), employee.getId());

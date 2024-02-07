@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import group.crudrest.dto.TaskDTO;
-import group.crudrest.model.Task;
 import jakarta.validation.Valid;
 
 public interface ITaskController {
