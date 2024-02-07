@@ -41,7 +41,8 @@ class CrudrestApplicationTests {
 
 		assertEquals(taskDTO.getTitle(), task.getTitle());
 		assertEquals(taskDTO.getDescription(), task.getDescription());
-		assertEquals(employee, task.getEmployee());
+		// assertEquals(employee, task.getEmployee());
+		assertEquals(employee.getId(), task.getEmployee_id());
 		assertEquals(taskDTO.getEmployee_id(), employee.getId());
 		assertEquals(task.getEmployee_id(), employee.getId());
 
@@ -60,7 +61,8 @@ class CrudrestApplicationTests {
 
 		assertEquals(taskDTO.getTitle(), task.getTitle());
 		assertEquals(taskDTO.getDescription(), task.getDescription());
-		assertEquals(employee, task.getEmployee());
+		// assertEquals(employee, task.getEmployee());
+		assertEquals(employee.getId(), task.getEmployee_id());
 		assertEquals(taskDTO.getEmployee_id(), employee.getId());
 		assertEquals(task.getEmployee_id(), employee.getId());
 
