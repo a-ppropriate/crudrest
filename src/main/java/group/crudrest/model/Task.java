@@ -31,10 +31,9 @@ public class Task {
     protected Task() {
     };
 
-    public Task(String title, String description, Employee employee) {
+    public Task(String title, String description) {
         this.title = title;
         this.description = description;
-        this.employee = employee;
     };
 
     @Override
@@ -66,6 +65,10 @@ public class Task {
 
     public Long getEmployee_id() {
         return this.employee.getId();
+    }
+
+    public Employee getEmployee() {
+        return this.employee;
     }
 
     public void setEmployee(Employee employee) {
