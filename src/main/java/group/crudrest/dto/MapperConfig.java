@@ -32,23 +32,17 @@ public class MapperConfig {
     private void taskDTO2task(ModelMapper mapper) {
         TypeMap<TaskDTO, Task> propertyMapper = mapper.createTypeMap(TaskDTO.class, Task.class);
 
-        propertyMapper.addMappings(
-                mapping -> mapping.map(src -> employeeRepository.findById(src.getEmployee_id()), Task::setEmployee));
-
-        // propertyMapper.addMapping(src -> employeeRepository.findById(
-        // src.getEmployee_id()), (dest, v) -> dest.setEmployee(v));
-
-        // propertyMapper.addMapping(src -> employeeRepository.findById(
-        // src.getEmployee_id()).orElseThrow(() -> {
-        // throw new EmployeeNotFoundException(src.getEmployee_id());
-        // }), (dest, v) -> dest.setEmployee(v));
-
+        propertyMapper
+                .addMappings(mapping -> mapping.using(ID2Employee).map(TaskDTO::getEmployee_id, Task::setEmployee));
     }
 
     private void task2taskDTO(ModelMapper mapper) {
-        TypeMap<Task, TaskDTO> propertyMapper = mapper.createTypeMap(Task.class, TaskDTO.class);
 
-        propertyMapper.addMappings(
-                mapping -> mapping.map(src -> src.getEmployee_id(), TaskDTO::setEmployee_id));
     }
+
+    private final Converter<Long, Employee> ID2Employee = c -> employeeRepository
+            .findById(c.getSource())
+            .orElseThrow(() -> {
+                throw new EmployeeNotFoundException(c.getSource());
+            });
 }
