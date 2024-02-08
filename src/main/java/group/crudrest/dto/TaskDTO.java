@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-@Schema(description = "Task entity")
+@Schema(name = "Task", description = "Task entity")
 public class TaskDTO {
     @Schema(description = "Id")
     private Long id;
