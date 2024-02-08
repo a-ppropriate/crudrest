@@ -1,5 +1,6 @@
 package group.crudrest.model;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,6 +13,7 @@ import jakarta.validation.constraints.NotBlank;
 //FIXME: task creation
 
 @Entity
+@Hidden
 public class Task {
 
     @Id

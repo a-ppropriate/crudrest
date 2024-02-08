@@ -1,15 +1,21 @@
 package group.crudrest.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+@Schema(description = "Task entity")
 public class TaskDTO {
+    @Schema(description = "Id")
     private Long id;
     @NotBlank(message = "Title can not be blank")
+    @Schema(description = "Title")
     private String title;
     @NotBlank(message = "Description can not be blank")
+    @Schema(description = "description")
     private String description;
     @NotNull(message = "Employee id can not be null")
+    @Schema(description = "Id of employee responsible for task")
     private Long employee_id;
 
     public Long getId() {
