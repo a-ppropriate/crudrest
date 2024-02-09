@@ -13,7 +13,6 @@ import jakarta.validation.constraints.NotBlank;
 //FIXME: task creation
 
 @Entity
-@Hidden
 public class Task {
 
     @Id
