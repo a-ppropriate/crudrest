@@ -1,21 +1,27 @@
 package group.crudrest.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Schema(name = "Employee", description = "Employee entity")
 public class EmployeeDTO {
-    @Schema(description = "Id")
+    @Schema(description = "Id", accessMode = AccessMode.READ_ONLY)
     private Long id;
 
     @NotBlank(message = "Name is mandatory")
     @Schema(description = "Name", example = "Bob")
+    @Size(max = 100, message = "Employee name should be no longer than 100 characters")
     private String name;
+
+    @Size(max = 100, message = "Employee address should be no longer than 100 characters")
     private String address;
 
     @NotBlank(message = "Email is mandatory")
     @Schema(description = "Email", example = "test@example.com")
+    @Size(max = 100, message = "Employee email should be no longer than 100 characters")
     @Pattern(regexp = "^[\\w!#$%&`*+/=?`{|}~^-]+(?:\\.[\\w!#$%&`*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", message = "Email seems to be invalid")
     private String email;
 

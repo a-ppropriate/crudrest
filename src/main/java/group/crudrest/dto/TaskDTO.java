@@ -1,21 +1,28 @@
 package group.crudrest.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Schema(name = "Task", description = "Task entity")
 public class TaskDTO {
-    @Schema(description = "Id")
+    @Schema(description = "Id", accessMode = AccessMode.READ_ONLY)
     private Long id;
+
     @NotBlank(message = "Title can not be blank")
-    @Schema(description = "Title")
+    @Schema(description = "Title", example = "Some title")
+    @Size(max = 255, message = "Task title should be no longer than 255 characters")
     private String title;
+
     @NotBlank(message = "Description can not be blank")
-    @Schema(description = "description")
+    @Schema(description = "description", example = "Some description")
+    @Size(max = 255, message = "Task description should be no longer than 255 characters")
     private String description;
+
     @NotNull(message = "Employee id can not be null")
-    @Schema(description = "Id of employee responsible for task")
+    @Schema(description = "Id of employee responsible for task", example = "1")
     private Long employee_id;
 
     public Long getId() {

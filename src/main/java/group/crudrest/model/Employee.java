@@ -12,8 +12,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-//TODO: better/proper validation
-
 @Entity
 public class Employee {
 
