@@ -33,7 +33,7 @@ class CrudrestApplicationTests {
 	public void task2taskDTO() {
 		Task task = new Task("title", "description");
 
-		Employee employee = employeeRepository.findById(1L);
+		Employee employee = employeeService.getEmployeeById(1L);
 
 		task.setEmployee(employee);
 
@@ -54,7 +54,7 @@ class CrudrestApplicationTests {
 		taskDTO.setDescription("description");
 		taskDTO.setEmployee_id(1L);
 
-		Employee employee = employeeRepository.findById(1L);
+		Employee employee = employeeService.getEmployeeById(1L);
 
 		Task task = modelMapper.map(taskDTO, Task.class);
 
