@@ -10,16 +10,13 @@ import org.springframework.context.annotation.Configuration;
 
 import group.crudrest.model.Employee;
 import group.crudrest.model.Task;
-import group.crudrest.exceptions.*;
-import group.crudrest.repository.*;
+import group.crudrest.services.EmployeeService;
 
 @Configuration
 public class MapperConfig {
-    @Autowired
-    TaskRepository taskRepository;
 
     @Autowired
-    EmployeeRepository employeeRepository;
+    EmployeeService employeeService;
 
     @Bean
     ModelMapper getModelMapper() {
@@ -40,9 +37,5 @@ public class MapperConfig {
 
     }
 
-    private final Converter<Long, Employee> ID2Employee = c -> employeeRepository
-            .findById(c.getSource())
-            .orElseThrow(() -> {
-                throw new EmployeeNotFoundException(c.getSource());
-            });
+    private final Converter<Long, Employee> ID2Employee = c -> employeeService.getEmployee(c.getSource());
 }

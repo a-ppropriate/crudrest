@@ -2,6 +2,7 @@ package group.crudrest.services;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,16 +18,24 @@ public class EmployeeService {
     @Autowired
     EmployeeRepository employeeRepository;
 
+    public Optional<Employee> findEmployeeById(Long id) {
+        Objects.requireNonNull(id);
+        return employeeRepository.findById(id);
+    }
+
+    public Employee getEmployeeById(Long id) {
+        return this.findEmployeeById(id).orElseThrow(
+                () -> {
+                    throw new EmployeeNotFoundException(id);
+                });
+    }
+
     public List<Employee> getEmployees() {
         return employeeRepository.findAll();
     }
 
     public Employee getEmployee(Long id) {
-        Objects.requireNonNull(id);
-        return employeeRepository.findById(id)
-                .orElseThrow(() -> {
-                    throw new EmployeeNotFoundException(id);
-                });
+        return this.getEmployeeById(id);
     }
 
     public Employee createEmployee(Employee employee) {
@@ -40,22 +49,18 @@ public class EmployeeService {
     }
 
     public Employee updateEmployee(Employee newEmployee, Long id) {
-        Objects.requireNonNull(id);
-        return employeeRepository.findById(id)
-                .map(employee -> {
-                    employee.setName(newEmployee.getName());
-                    employee.setAddress(newEmployee.getAddress());
-                    employee.setEmail(newEmployee.getEmail());
 
-                    return employeeRepository.save(employee);
-                }).orElseThrow(() -> new EmployeeNotFoundException(id));
+        Employee emp = this.getEmployeeById(id);
+        emp.setName(newEmployee.getName());
+        emp.setAddress(newEmployee.getAddress());
+        emp.setEmail(newEmployee.getEmail());
+        return employeeRepository.save(emp);
     }
 
     public List<Task> getTaskList(@PathVariable Long id) {
-        Objects.requireNonNull(id);
-        return employeeRepository.findById(id).map(
-                employee -> employee.getTasks())
-                .orElseThrow(() -> new EmployeeNotFoundException(id));
+
+        Employee emp = this.getEmployeeById(id);
+        return emp.getTasks();
     }
 
 }
