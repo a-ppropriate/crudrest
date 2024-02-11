@@ -37,5 +37,5 @@ public class MapperConfig {
 
     }
 
-    private final Converter<Long, Employee> ID2Employee = c -> employeeService.getEmployee(c.getSource());
+    private final Converter<Long, Employee> ID2Employee = c -> employeeService.getEmployeeById(c.getSource());
 }
