@@ -1,11 +1,16 @@
 package group.crudrest.model;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -24,6 +29,10 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
+
+    @OneToMany(mappedBy = "task") // TODO: add cascade deletion
+    @JsonIgnore
+    private List<EmployeeAssistsInTask> employeeAssistantRelations;
 
     protected Task() {
     };
@@ -70,5 +79,9 @@ public class Task {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public List<EmployeeAssistsInTask> getAssistedTasksRelations() {
+        return this.employeeAssistantRelations;
     }
 }

@@ -80,6 +80,16 @@ class EmployeeController implements IEmployeeController {
     return mapList(employeeService.getTaskList(id), TaskDTO.class);
   }
 
+  @Override
+  public List<TaskDTO> assistTasksList(@PathVariable Long id) {
+    return mapList(employeeService.getAssistedTaskList(id), TaskDTO.class);
+  }
+
+  @Override
+  public EmployeeDTO addAssistanceInTask(@PathVariable Long id, @PathVariable Long task_id) {
+    return this.mapEmployee(employeeService.addAssistanceInTask(id, task_id));
+  }
+
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {

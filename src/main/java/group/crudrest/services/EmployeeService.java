@@ -10,13 +10,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import group.crudrest.exceptions.EmployeeNotFoundException;
 import group.crudrest.model.Employee;
+import group.crudrest.model.EmployeeAssistsInTask;
 import group.crudrest.model.Task;
+import group.crudrest.repository.EmployeeAssistsInTaskRepository;
 import group.crudrest.repository.EmployeeRepository;
 
 @Service
 public class EmployeeService {
     @Autowired
     EmployeeRepository employeeRepository;
+
+    // @Autowired
+    // EmployeeAsistsInTaskService employeeAsistsInTaskService;
+
+    @Autowired
+    EmployeeAssistsInTaskRepository employeeAssistsInTaskRepository;
+
+    @Autowired
+    TaskService taskService;
 
     public Optional<Employee> findEmployeeById(Long id) {
         Objects.requireNonNull(id);
@@ -63,4 +74,18 @@ public class EmployeeService {
         return emp.getTasks();
     }
 
+    public List<Task> getAssistedTaskList(@PathVariable Long id) {
+
+        Employee emp = this.getEmployeeById(id);
+        return emp.getAssistedTasksRelations().stream().map(rel -> rel.getTask()).toList();
+    }
+
+    public Employee addAssistanceInTask(Long id, Long task_id) {
+        Employee emp = this.getEmployeeById(id);
+        // employeeAsistsInTaskService.createEmployeeAsistsInTaskService(id, task_id);
+        Task task = taskService.getTaskById(task_id);
+        EmployeeAssistsInTask emp_assists_task = new EmployeeAssistsInTask(emp, task);
+        employeeAssistsInTaskRepository.save(emp_assists_task);
+        return emp;
+    }
 }

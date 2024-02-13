@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import group.crudrest.dto.EmployeeDTO;
 import group.crudrest.dto.TaskDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,4 +39,8 @@ public interface ITaskController {
     @DeleteMapping("/tasks/{id}")
     @Operation(summary = "Delete task")
     void deleteTask(@PathVariable Long id);
+
+    @GetMapping("/tasks/{id}/employee_assistants/")
+    @Operation(summary = "List employees that assist with the task")
+    List<EmployeeDTO> assistantEmployeesList(@PathVariable Long id);
 }

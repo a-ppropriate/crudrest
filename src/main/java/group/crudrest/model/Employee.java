@@ -48,6 +48,10 @@ public class Employee {
 	@JsonIgnore
 	private List<Task> tasks;
 
+	@OneToMany(mappedBy = "employee")
+	@JsonIgnore
+	private List<EmployeeAssistsInTask> assistedTasksRelations;
+
 	public Long getId() {
 		return id;
 	}
@@ -78,5 +82,9 @@ public class Employee {
 
 	public List<Task> getTasks() {
 		return this.tasks;
+	}
+
+	public List<EmployeeAssistsInTask> getAssistedTasksRelations() {
+		return this.assistedTasksRelations;
 	}
 }

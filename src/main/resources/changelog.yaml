@@ -73,3 +73,48 @@ databaseChangeLog:
         referencedTableName: employee
         validate: true
 
+- changeSet:
+    id: 1
+    author: aa
+    changes:
+    - createTable:
+        tableName: employee_assists_in_task
+        columns:
+        - column:
+            name: employee_id
+            type: BIGINT
+            constraints:
+              nullable: false
+        - column:
+            name: task_id
+            type: BIGINT
+            constraints:
+              nullable: false
+
+
+    - addForeignKeyConstraint:
+        baseColumnNames: employee_id
+        baseTableName: employee_assists_in_task
+        constraintName: fk_employee
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: CASCADE
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: employee
+        validate: true
+    - addForeignKeyConstraint:
+        baseColumnNames: task_id
+        baseTableName: employee_assists_in_task
+        constraintName: fk_task
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: CASCADE
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: task
+        validate: true
+    - addUniqueConstraint:
+        tableName: employee_assists_in_task
+        columnNames: employee_id, task_id
+        constraintName: unique_assist

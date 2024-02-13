@@ -43,4 +43,13 @@ public interface IEmployeeController {
     @GetMapping("/employees/{id}/tasks/")
     @Operation(summary = "List employee's tasks")
     List<TaskDTO> tasksList(@PathVariable Long id);
+
+    @GetMapping("/employees/{id}/assists_in_tasks/")
+    @Operation(summary = "List tasks the employee assists with")
+    List<TaskDTO> assistTasksList(@PathVariable Long id);
+
+    @PutMapping("/employees/{id}/assists_in_tasks/{task_id}")
+    @Operation(summary = "Add employee asists in task relation")
+    EmployeeDTO addAssistanceInTask(@PathVariable Long id, @PathVariable Long task_id);
+
 }

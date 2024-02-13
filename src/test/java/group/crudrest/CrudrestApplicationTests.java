@@ -11,6 +11,7 @@ import group.crudrest.dto.TaskDTO;
 
 import group.crudrest.model.Employee;
 import group.crudrest.model.Task;
+import group.crudrest.model.composite_keys.EmployeeAssistsInTaskKey;
 import group.crudrest.repository.EmployeeRepository;
 import group.crudrest.services.EmployeeService;
 
@@ -64,6 +65,14 @@ class CrudrestApplicationTests {
 		assertEquals(taskDTO.getEmployee_id(), employee.getId());
 		assertEquals(task.getEmployee_id(), employee.getId());
 
+	}
+
+	@Test
+	public void EmployeeAssistKeyTest() {
+		EmployeeAssistsInTaskKey k1 = new EmployeeAssistsInTaskKey(12L, 12L);
+		EmployeeAssistsInTaskKey k2 = new EmployeeAssistsInTaskKey(12L, 12L);
+
+		assertEquals(k1, k2);
 	}
 
 }

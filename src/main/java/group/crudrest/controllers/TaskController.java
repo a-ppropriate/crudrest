@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import group.crudrest.services.TaskService;
 import jakarta.validation.Valid;
 import group.crudrest.controllers.interfaces.ITaskController;
+import group.crudrest.dto.EmployeeDTO;
 import group.crudrest.dto.TaskDTO;
 import group.crudrest.model.Task;
 
@@ -75,6 +76,11 @@ class TaskController implements ITaskController {
   @Override
   public void deleteTask(@PathVariable Long id) {
     taskService.deleteTask(id);
+  }
+
+  @Override
+  public List<EmployeeDTO> assistantEmployeesList(@PathVariable Long id) {
+    return mapList(taskService.getAssistantEmployeeList(id), EmployeeDTO.class);
   }
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)
