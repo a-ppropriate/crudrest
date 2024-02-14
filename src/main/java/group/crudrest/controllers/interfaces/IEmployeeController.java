@@ -52,4 +52,8 @@ public interface IEmployeeController {
     @Operation(summary = "Add employee asists in task relation")
     EmployeeDTO addAssistanceInTask(@PathVariable Long id, @PathVariable Long task_id);
 
+    @DeleteMapping("/employees/{id}/assists_in_tasks/{task_id}")
+    @Operation(summary = "Remove employee asists in task relation")
+    void deleteAssistanceInTask(@PathVariable Long id, @PathVariable Long task_id);
+
 }

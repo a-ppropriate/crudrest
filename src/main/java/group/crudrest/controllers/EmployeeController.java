@@ -90,6 +90,11 @@ class EmployeeController implements IEmployeeController {
     return this.mapEmployee(employeeService.addAssistanceInTask(id, task_id));
   }
 
+  @Override
+  public void deleteAssistanceInTask(@PathVariable Long id, @PathVariable Long task_id) {
+    employeeService.deleteAssistanceInTask(id, task_id);
+  };
+
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {

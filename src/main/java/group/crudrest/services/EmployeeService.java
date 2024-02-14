@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import group.crudrest.exceptions.EmployeeAssistsInTaskNotFound;
+import group.crudrest.exceptions.EmployeeIsAlreadyAnOwnerException;
 import group.crudrest.exceptions.EmployeeNotFoundException;
 import group.crudrest.model.Employee;
 import group.crudrest.model.EmployeeAssistsInTask;
 import group.crudrest.model.Task;
+import group.crudrest.model.composite_keys.EmployeeAssistsInTaskKey;
 import group.crudrest.repository.EmployeeAssistsInTaskRepository;
 import group.crudrest.repository.EmployeeRepository;
 
@@ -38,6 +41,14 @@ public class EmployeeService {
         return this.findEmployeeById(id).orElseThrow(
                 () -> {
                     throw new EmployeeNotFoundException(id);
+                });
+    }
+
+    public EmployeeAssistsInTask getAssistanceById(EmployeeAssistsInTaskKey key) {
+        Objects.requireNonNull(key);
+        return employeeAssistsInTaskRepository.findById(key).orElseThrow(
+                () -> {
+                    throw new EmployeeAssistsInTaskNotFound(key);
                 });
     }
 
@@ -82,10 +93,21 @@ public class EmployeeService {
 
     public Employee addAssistanceInTask(Long id, Long task_id) {
         Employee emp = this.getEmployeeById(id);
-        // employeeAsistsInTaskService.createEmployeeAsistsInTaskService(id, task_id);
         Task task = taskService.getTaskById(task_id);
+
+        if (id == task.getEmployee_id()) {
+            throw new EmployeeIsAlreadyAnOwnerException(emp.getId(), task.getId());
+        }
+
         EmployeeAssistsInTask emp_assists_task = new EmployeeAssistsInTask(emp, task);
         employeeAssistsInTaskRepository.save(emp_assists_task);
         return emp;
+    }
+
+    public void deleteAssistanceInTask(Long id, Long task_id) {
+        EmployeeAssistsInTaskKey key = new EmployeeAssistsInTaskKey(id, task_id);
+        EmployeeAssistsInTask emp_assists_task = this.getAssistanceById(key);
+        Objects.requireNonNull(emp_assists_task);
+        employeeAssistsInTaskRepository.delete(emp_assists_task);
     }
 }

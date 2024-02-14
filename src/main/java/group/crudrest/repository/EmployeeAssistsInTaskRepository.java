@@ -5,6 +5,6 @@ import group.crudrest.model.EmployeeAssistsInTask;
 import group.crudrest.model.composite_keys.EmployeeAssistsInTaskKey;
 
 public interface EmployeeAssistsInTaskRepository
-        extends JpaRepository<EmployeeAssistsInTask, EmployeeAssistsInTaskKey> {
+                extends JpaRepository<EmployeeAssistsInTask, EmployeeAssistsInTaskKey> {
 
 }

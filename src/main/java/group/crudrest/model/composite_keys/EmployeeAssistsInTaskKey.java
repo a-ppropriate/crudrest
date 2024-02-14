@@ -1,6 +1,7 @@
 package group.crudrest.model.composite_keys;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -18,6 +19,8 @@ public class EmployeeAssistsInTaskKey implements Serializable {
     }
 
     public EmployeeAssistsInTaskKey(Long employee_id, Long task_id) {
+        Objects.requireNonNull(employee_id);
+        Objects.requireNonNull(task_id);
         this.employeeId = employee_id;
         this.taskId = task_id;
     }
@@ -55,6 +58,5 @@ public class EmployeeAssistsInTaskKey implements Serializable {
         EmployeeAssistsInTaskKey other = (EmployeeAssistsInTaskKey) obj;
 
         return (other.getEmployeeId() == this.getEmployeeId() && other.getTaskId() == this.getTaskId());
-        // return super.equals(obj);
     }
 }
