@@ -3,7 +3,9 @@ package group.crudrest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -28,6 +30,63 @@ class CrudrestApplicationTests {
 
 	@Test
 	void contextLoads() {
+	}
+
+	@Test
+	void modelmapper1() {
+		// works as intended
+		ModelMapper testMapper = new ModelMapper();
+		TypeMap<TaskDTO, Task> propertyMapper = testMapper.createTypeMap(TaskDTO.class, Task.class);
+
+		Converter<Long, Employee> ID2Employee = c -> employeeService.getEmployeeById(c.getSource());
+
+		propertyMapper
+				.addMappings(mapping -> mapping.using(ID2Employee).map(TaskDTO::getEmployee_id, Task::setEmployee));
+
+		TaskDTO taskDTO = new TaskDTO();
+		taskDTO.setTitle("title");
+		taskDTO.setDescription("description");
+		taskDTO.setEmployee_id(1L);
+
+		Employee employee = employeeService.getEmployeeById(1L);
+
+		Task task = testMapper.map(taskDTO, Task.class);
+
+		assertEquals(taskDTO.getTitle(), task.getTitle());
+		assertEquals(taskDTO.getDescription(), task.getDescription());
+		assertEquals(employee.getId(), task.getEmployee_id());
+		assertEquals(taskDTO.getEmployee_id(), employee.getId());
+		assertEquals(task.getEmployee_id(), employee.getId());
+	}
+
+	@Test
+	void modelmapper2() {
+		// as shown in: https://www.baeldung.com/java-modelmapper p. 4.1
+		// fails with exception group.crudrest.exceptions.EmployeeNotFoundException:
+		// Could not find employee 0
+
+		ModelMapper testMapper = new ModelMapper();
+		TypeMap<TaskDTO, Task> propertyMapper = testMapper.createTypeMap(TaskDTO.class, Task.class);
+
+		propertyMapper.addMappings(
+				mapper -> mapper.map(src -> {
+					return employeeService.getEmployeeById(src.getEmployee_id());
+				}, Task::setEmployee));
+
+		TaskDTO taskDTO = new TaskDTO();
+		taskDTO.setTitle("title");
+		taskDTO.setDescription("description");
+		taskDTO.setEmployee_id(1L);
+
+		Employee employee = employeeService.getEmployeeById(1L);
+
+		Task task = testMapper.map(taskDTO, Task.class);
+
+		assertEquals(taskDTO.getTitle(), task.getTitle());
+		assertEquals(taskDTO.getDescription(), task.getDescription());
+		assertEquals(employee.getId(), task.getEmployee_id());
+		assertEquals(taskDTO.getEmployee_id(), employee.getId());
+		assertEquals(task.getEmployee_id(), employee.getId());
 	}
 
 	@Test
