@@ -35,6 +35,8 @@ class CrudrestApplicationTests {
 	@Test
 	void modelmapper1() {
 		// works as intended
+
+		System.out.println("First test - 1");
 		ModelMapper testMapper = new ModelMapper();
 		TypeMap<TaskDTO, Task> propertyMapper = testMapper.createTypeMap(TaskDTO.class, Task.class);
 
@@ -42,6 +44,7 @@ class CrudrestApplicationTests {
 
 		propertyMapper
 				.addMappings(mapping -> mapping.using(ID2Employee).map(TaskDTO::getEmployee_id, Task::setEmployee));
+		System.out.println("First test - 2");
 
 		TaskDTO taskDTO = new TaskDTO();
 		taskDTO.setTitle("title");
@@ -57,6 +60,7 @@ class CrudrestApplicationTests {
 		assertEquals(employee.getId(), task.getEmployee_id());
 		assertEquals(taskDTO.getEmployee_id(), employee.getId());
 		assertEquals(task.getEmployee_id(), employee.getId());
+		System.out.println("First test - 3");
 	}
 
 	@Test
@@ -64,6 +68,7 @@ class CrudrestApplicationTests {
 		// as shown in: https://www.baeldung.com/java-modelmapper p. 4.1
 		// fails with exception group.crudrest.exceptions.EmployeeNotFoundException:
 		// Could not find employee 0
+		System.out.println("Second test - 1");
 
 		ModelMapper testMapper = new ModelMapper();
 		TypeMap<TaskDTO, Task> propertyMapper = testMapper.createTypeMap(TaskDTO.class, Task.class);
@@ -73,6 +78,8 @@ class CrudrestApplicationTests {
 					return employeeService.getEmployeeById(src.getEmployee_id());
 				}, Task::setEmployee));
 
+		System.out.println("Second test - 2");
+
 		TaskDTO taskDTO = new TaskDTO();
 		taskDTO.setTitle("title");
 		taskDTO.setDescription("description");
@@ -87,6 +94,7 @@ class CrudrestApplicationTests {
 		assertEquals(employee.getId(), task.getEmployee_id());
 		assertEquals(taskDTO.getEmployee_id(), employee.getId());
 		assertEquals(task.getEmployee_id(), employee.getId());
+		System.out.println("Second test - 3");
 	}
 
 	@Test
