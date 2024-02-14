@@ -43,7 +43,7 @@ public class EmployeeAssistsInTaskKey implements Serializable {
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return Objects.hash(employeeId, taskId);
     }
 
     @Override
