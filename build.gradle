@@ -25,7 +25,9 @@ dependencies {
 	
 	//implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	runtimeOnly 'org.postgresql:postgresql'
+	//runtimeOnly 'org.postgresql:postgresql'
+	runtimeOnly 'com.h2database:h2:2.1.214'
+
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
@@ -35,7 +37,7 @@ dependencies {
 	liquibaseRuntime 'org.liquibase:liquibase-core:4.24.0'
 	liquibaseRuntime 'info.picocli:picocli:4.7.5'
 	liquibaseRuntime 'org.yaml:snakeyaml:1.33'
-	liquibaseRuntime 'org.postgresql:postgresql'
+	//liquibaseRuntime 'org.postgresql:postgresql'
 
 	
 	// swagger
