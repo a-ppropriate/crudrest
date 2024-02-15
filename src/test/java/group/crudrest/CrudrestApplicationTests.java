@@ -261,9 +261,6 @@ class CrudrestApplicationTests {
 
 		Optional<EmployeeAssistsInTask> res = employeeAssistsInTaskRepository.findById(key);
 
-		System.out.println(created_assist.toString());
-		System.out.println(res.get().toString());
-
 		assertTrue(created_assist.equals(res.get()));
 
 		taskService.deleteTask(task_id);
