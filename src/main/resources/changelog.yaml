@@ -118,3 +118,22 @@ databaseChangeLog:
         tableName: employee_assists_in_task
         columnNames: employee_id, task_id
         constraintName: unique_assist
+
+- changeSet:
+    id: 2
+    author: aa
+    changes:
+    - dropForeignKeyConstraint:
+        baseTableName: task
+        constraintName: fk_employee
+    - addForeignKeyConstraint:
+        baseColumnNames: employee_id
+        baseTableName: task
+        constraintName: fk_employee
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: CASCADE
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: employee
+        validate: true

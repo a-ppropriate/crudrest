@@ -31,6 +31,34 @@ public class EmployeeAssistsInTask {
         this.id = new EmployeeAssistsInTaskKey(employee.getId(), task.getId());
     }
 
+    @Override
+    public String toString() {
+        return String.format(
+                "Employee[employee = %s, task = %s]",
+                employee.toString(), task.toString());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (this == obj)
+            return true;
+
+        if (obj == null)
+            return false;
+
+        if (getClass() != obj.getClass())
+            return false;
+
+        EmployeeAssistsInTask other = (EmployeeAssistsInTask) obj;
+
+        return this.getId() == other.getId();
+    }
+
+    public EmployeeAssistsInTaskKey getId() {
+        return this.id;
+    }
+
     public Employee getEmployee() {
         return employee;
     }
@@ -46,4 +74,5 @@ public class EmployeeAssistsInTask {
     public void setTask(Task task) {
         this.task = task;
     }
+
 }

@@ -2,6 +2,9 @@ package group.crudrest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.modelmapper.Converter;
@@ -13,10 +16,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import group.crudrest.dto.TaskDTO;
 import group.crudrest.exceptions.UnexpectedBehaviourException;
 import group.crudrest.model.Employee;
+import group.crudrest.model.EmployeeAssistsInTask;
 import group.crudrest.model.Task;
 import group.crudrest.model.composite_keys.EmployeeAssistsInTaskKey;
+import group.crudrest.repository.EmployeeAssistsInTaskRepository;
 import group.crudrest.repository.EmployeeRepository;
+import group.crudrest.repository.TaskRepository;
 import group.crudrest.services.EmployeeService;
+import group.crudrest.services.TaskService;
 
 @SpringBootTest
 class CrudrestApplicationTests {
@@ -27,7 +34,16 @@ class CrudrestApplicationTests {
 	EmployeeRepository employeeRepository;
 
 	@Autowired
+	TaskRepository taskRepository;
+
+	@Autowired
+	TaskService taskService;
+
+	@Autowired
 	EmployeeService employeeService;
+
+	@Autowired
+	EmployeeAssistsInTaskRepository employeeAssistsInTaskRepository;
 
 	@Test
 	void contextLoads() {
@@ -149,6 +165,112 @@ class CrudrestApplicationTests {
 
 		assertThrows(UnexpectedBehaviourException.class, () -> t.getEmployee_id(),
 				"A proper Task is not supposed to exist without employee: " + t.toString());
+	}
+
+	@Test
+	public void TaskCascadeDeletion() {
+		Employee employee = new Employee("a", "b", "ccc@cc.com");
+		Employee created_employee = employeeService.createEmployee(employee);
+
+		Task task = new Task("1", "1");
+		task.setEmployee(created_employee);
+
+		Task created_task = taskRepository.save(task);
+		Long task_id = created_task.getId();
+
+		if (task_id == null) {
+			throw new UnexpectedBehaviourException("Something went horribly wrong");
+		}
+
+		employeeService.deleteEmployee(created_employee.getId());
+		assertTrue(taskRepository.findById(task_id).isEmpty());
+	}
+
+	@Test
+	public void AssistanceCascadeDeletionByEmployeeDeletion() {
+		Employee owner_employee = new Employee("q", "w", "eee@cc.com");
+		Employee created_owner_employee = employeeService.createEmployee(owner_employee);
+
+		Employee employee = new Employee("a", "b", "ccc@cc.com");
+		Employee created_employee = employeeService.createEmployee(employee);
+		Long assistant_id = created_employee.getId();
+
+		if (assistant_id == null) {
+			throw new UnexpectedBehaviourException("Something went horribly wrong");
+		}
+
+		Task task = new Task("1", "1");
+		task.setEmployee(created_owner_employee);
+
+		Task created_task = taskRepository.save(task);
+		Long task_id = created_task.getId();
+
+		if (task_id == null) {
+			throw new UnexpectedBehaviourException("Something went horribly wrong");
+		}
+
+		EmployeeAssistsInTask assist = new EmployeeAssistsInTask(created_employee, created_task);
+		EmployeeAssistsInTask created_assist = employeeAssistsInTaskRepository.save(assist);
+		EmployeeAssistsInTaskKey key = created_assist.getId();
+
+		if (key == null) {
+			throw new UnexpectedBehaviourException("Something went horribly wrong");
+		}
+
+		Optional<EmployeeAssistsInTask> res = employeeAssistsInTaskRepository.findById(key);
+
+		assertTrue(created_assist.equals(res.get()));
+		employeeService.deleteEmployee(assistant_id);
+
+		Optional<EmployeeAssistsInTask> res1 = employeeAssistsInTaskRepository.findById(key);
+
+		assertTrue(res1.isEmpty());
+	}
+
+	// TODO: move reusable code to helpers/methods
+	@Test
+	public void AssistanceCascadeDeletionByTaskDeletion() {
+		Employee owner_employee = new Employee("q", "w", "eee@cc.com");
+		Employee created_owner_employee = employeeService.createEmployee(owner_employee);
+
+		Employee employee = new Employee("a", "b", "ccc@cc.com");
+		Employee created_employee = employeeService.createEmployee(employee);
+		Long assistant_id = created_employee.getId();
+
+		if (assistant_id == null) {
+			throw new UnexpectedBehaviourException("Something went horribly wrong");
+		}
+
+		Task task = new Task("1", "1");
+		task.setEmployee(created_owner_employee);
+
+		Task created_task = taskRepository.save(task);
+		Long task_id = created_task.getId();
+
+		if (task_id == null) {
+			throw new UnexpectedBehaviourException("Something went horribly wrong");
+		}
+
+		EmployeeAssistsInTask assist = new EmployeeAssistsInTask(created_employee, created_task);
+		EmployeeAssistsInTask created_assist = employeeAssistsInTaskRepository.save(assist);
+		EmployeeAssistsInTaskKey key = created_assist.getId();
+
+		if (key == null) {
+			throw new UnexpectedBehaviourException("Something went horribly wrong");
+		}
+
+		Optional<EmployeeAssistsInTask> res = employeeAssistsInTaskRepository.findById(key);
+
+		System.out.println(created_assist.toString());
+		System.out.println(res.get().toString());
+
+		assertTrue(created_assist.equals(res.get()));
+
+		taskService.deleteTask(task_id);
+
+		Optional<EmployeeAssistsInTask> res1 = employeeAssistsInTaskRepository.findById(key);
+
+		assertTrue(res1.isEmpty());
 	}
 
 }

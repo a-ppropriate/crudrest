@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import group.crudrest.exceptions.UnexpectedBehaviourException;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,7 +32,7 @@ public class Task {
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
-    @OneToMany(mappedBy = "task") // TODO: add cascade deletion
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<EmployeeAssistsInTask> employeeAssistantRelations;
 
