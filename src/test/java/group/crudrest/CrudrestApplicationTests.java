@@ -1,6 +1,7 @@
 package group.crudrest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 import org.modelmapper.Converter;
@@ -10,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import group.crudrest.dto.TaskDTO;
-
+import group.crudrest.exceptions.UnexpectedBehaviourException;
 import group.crudrest.model.Employee;
 import group.crudrest.model.Task;
 import group.crudrest.model.composite_keys.EmployeeAssistsInTaskKey;
@@ -140,6 +141,14 @@ class CrudrestApplicationTests {
 		EmployeeAssistsInTaskKey k2 = new EmployeeAssistsInTaskKey(12L, 12L);
 
 		assertEquals(k1, k2);
+	}
+
+	@Test
+	public void UnexpectedBehaviourOnTaskTest() {
+		Task t = new Task("1", "1");
+
+		assertThrows(UnexpectedBehaviourException.class, () -> t.getEmployee_id(),
+				"A proper Task is not supposed to exist without employee: " + t.toString());
 	}
 
 }

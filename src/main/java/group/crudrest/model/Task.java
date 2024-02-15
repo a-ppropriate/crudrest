@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import group.crudrest.exceptions.UnexpectedBehaviourException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -70,7 +71,12 @@ public class Task {
     }
 
     public Long getEmployee_id() {
-        return this.employee.getId();
+        Employee emp = this.getEmployee();
+        if (emp == null) {
+            throw new UnexpectedBehaviourException(
+                    "A proper Task is not supposed to exist without employee: " + this.toString());
+        }
+        return emp.getId();
     }
 
     public Employee getEmployee() {
