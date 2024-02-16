@@ -3,8 +3,6 @@ package group.crudrest.controllers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,11 +12,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import group.crudrest.services.EmployeeService;
+import group.crudrest.utils.MappingUtil;
 import jakarta.validation.Valid;
 import group.crudrest.controllers.interfaces.IEmployeeController;
 import group.crudrest.dto.EmployeeDTO;
 import group.crudrest.dto.TaskDTO;
-import group.crudrest.model.Employee;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,41 +31,24 @@ class EmployeeController implements IEmployeeController {
   @Autowired
   ModelMapper modelMapper;
 
-  private Employee mapEmployee(EmployeeDTO c) {
-    Objects.requireNonNull(c);
-    return modelMapper.map(c, Employee.class);
-  }
-
-  private EmployeeDTO mapEmployee(Employee c) {
-    Objects.requireNonNull(c);
-    return modelMapper.map(c, EmployeeDTO.class);
-  }
-
-  private <S, T> List<T> mapList(List<S> source, Class<T> targetClass) {
-    return source
-        .stream()
-        .map(element -> modelMapper.map(element, targetClass))
-        .collect(Collectors.toList());
-  }
-
   @Override
   public List<EmployeeDTO> all() {
-    return mapList(employeeService.getEmployees(), EmployeeDTO.class);
+    return MappingUtil.mapList(employeeService.getEmployees(), EmployeeDTO.class);
   }
 
   @Override
   public EmployeeDTO newEmployee(@Valid @RequestBody EmployeeDTO newEmployee) {
-    return mapEmployee(employeeService.createEmployee(mapEmployee(newEmployee)));
+    return MappingUtil.mapEmployee(employeeService.createEmployee(MappingUtil.mapEmployee(newEmployee)));
   }
 
   @Override
   public EmployeeDTO one(@PathVariable Long id) {
-    return mapEmployee(employeeService.getEmployee(id));
+    return MappingUtil.mapEmployee(employeeService.getEmployee(id));
   }
 
   @Override
   public EmployeeDTO replaceEmployee(@Valid @RequestBody EmployeeDTO newEmployee, @PathVariable Long id) {
-    return mapEmployee(employeeService.updateEmployee(mapEmployee(newEmployee), id));
+    return MappingUtil.mapEmployee(employeeService.updateEmployee(MappingUtil.mapEmployee(newEmployee), id));
   }
 
   @Override
@@ -77,17 +58,17 @@ class EmployeeController implements IEmployeeController {
 
   @Override
   public List<TaskDTO> tasksList(@PathVariable Long id) {
-    return mapList(employeeService.getTaskList(id), TaskDTO.class);
+    return MappingUtil.mapList(employeeService.getTaskList(id), TaskDTO.class);
   }
 
   @Override
   public List<TaskDTO> assistTasksList(@PathVariable Long id) {
-    return mapList(employeeService.getAssistedTaskList(id), TaskDTO.class);
+    return MappingUtil.mapList(employeeService.getAssistedTaskList(id), TaskDTO.class);
   }
 
   @Override
   public EmployeeDTO addAssistanceInTask(@PathVariable Long id, @PathVariable Long task_id) {
-    return this.mapEmployee(employeeService.addAssistanceInTask(id, task_id));
+    return MappingUtil.mapEmployee(employeeService.addAssistanceInTask(id, task_id));
   }
 
   @Override
