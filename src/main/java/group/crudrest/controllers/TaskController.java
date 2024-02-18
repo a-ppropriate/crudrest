@@ -3,12 +3,14 @@ package group.crudrest.controllers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +23,7 @@ import group.crudrest.dto.TaskDTO;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 
@@ -33,8 +36,9 @@ class TaskController implements ITaskController {
   ModelMapper modelMapper;
 
   @Override
-  public List<TaskDTO> all() {
-    return MappingUtil.mapList(taskService.getTasks(), TaskDTO.class);
+  public Page<TaskDTO> all(@RequestParam(name = "page_offset") Optional<Integer> page_offset,
+      @RequestParam(name = "page_size") Optional<Integer> page_size) {
+    return MappingUtil.mapPage(taskService.getTasks(page_offset, page_size), TaskDTO.class);
   }
 
   @Override

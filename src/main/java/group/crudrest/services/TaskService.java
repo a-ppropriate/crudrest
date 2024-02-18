@@ -2,8 +2,12 @@ package group.crudrest.services;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -18,8 +22,10 @@ public class TaskService {
     @Autowired
     TaskRepository taskRepository;
 
-    public List<Task> getTasks() {
-        return taskRepository.findAll();
+    public Page<Task> getTasks(Optional<Integer> page_offset, Optional<Integer> page_size) {
+        Pageable request = PageRequest.of(page_offset.orElse(0), page_size.orElse(5));
+        Page<Task> allTasks = taskRepository.findAll(request);
+        return allTasks;
     }
 
     public Task getTask(Long id) {
