@@ -2,7 +2,6 @@ package group.crudrest.services;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,39 +9,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import group.crudrest.exceptions.EmployeeAssistsInTaskNotFound;
 import group.crudrest.exceptions.EmployeeIsAlreadyAnOwnerException;
-import group.crudrest.exceptions.EmployeeNotFoundException;
 import group.crudrest.model.Employee;
 import group.crudrest.model.EmployeeAssistsInTask;
 import group.crudrest.model.Task;
 import group.crudrest.model.composite_keys.EmployeeAssistsInTaskKey;
 import group.crudrest.repository.EmployeeAssistsInTaskRepository;
 import group.crudrest.repository.EmployeeRepository;
+import group.crudrest.utils.EmployeeUtil;
+import group.crudrest.utils.TaskUtil;
 
 @Service
 public class EmployeeService {
     @Autowired
     EmployeeRepository employeeRepository;
 
-    // @Autowired
-    // EmployeeAsistsInTaskService employeeAsistsInTaskService;
-
     @Autowired
     EmployeeAssistsInTaskRepository employeeAssistsInTaskRepository;
 
     @Autowired
     TaskService taskService;
-
-    public Optional<Employee> findEmployeeById(Long id) {
-        Objects.requireNonNull(id);
-        return employeeRepository.findById(id);
-    }
-
-    public Employee getEmployeeById(Long id) {
-        return this.findEmployeeById(id).orElseThrow(
-                () -> {
-                    throw new EmployeeNotFoundException(id);
-                });
-    }
 
     public EmployeeAssistsInTask getAssistanceById(EmployeeAssistsInTaskKey key) {
         Objects.requireNonNull(key);
@@ -57,7 +42,8 @@ public class EmployeeService {
     }
 
     public Employee getEmployee(Long id) {
-        return this.getEmployeeById(id);
+
+        return EmployeeUtil.getEmployeeById(id);
     }
 
     public Employee createEmployee(Employee employee) {
@@ -72,7 +58,7 @@ public class EmployeeService {
 
     public Employee updateEmployee(Employee newEmployee, Long id) {
 
-        Employee emp = this.getEmployeeById(id);
+        Employee emp = EmployeeUtil.getEmployeeById(id);
         emp.setName(newEmployee.getName());
         emp.setAddress(newEmployee.getAddress());
         emp.setEmail(newEmployee.getEmail());
@@ -81,21 +67,21 @@ public class EmployeeService {
 
     public List<Task> getTaskList(@PathVariable Long id) {
 
-        Employee emp = this.getEmployeeById(id);
+        Employee emp = EmployeeUtil.getEmployeeById(id);
         return emp.getTasks();
     }
 
     public List<Task> getAssistedTaskList(@PathVariable Long id) {
 
-        Employee emp = this.getEmployeeById(id);
+        Employee emp = EmployeeUtil.getEmployeeById(id);
         return emp.getAssistedTasksRelations().stream().map(rel -> rel.getTask()).toList();
     }
 
     public Employee addAssistanceInTask(Long id, Long task_id) {
-        Employee emp = this.getEmployeeById(id);
-        Task task = taskService.getTaskById(task_id);
+        Employee emp = EmployeeUtil.getEmployeeById(id);
+        Task task = TaskUtil.getTaskById(task_id);
 
-        if (id == task.getEmployee_id()) {
+        if (id == task.getEmployee().getId()) {
             throw new EmployeeIsAlreadyAnOwnerException(emp.getId(), task.getId());
         }
 

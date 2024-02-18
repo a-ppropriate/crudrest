@@ -24,6 +24,7 @@ import group.crudrest.repository.EmployeeRepository;
 import group.crudrest.repository.TaskRepository;
 import group.crudrest.services.EmployeeService;
 import group.crudrest.services.TaskService;
+import group.crudrest.utils.EmployeeUtil;
 
 @SpringBootTest
 class CrudrestApplicationTests {
@@ -57,7 +58,7 @@ class CrudrestApplicationTests {
 		ModelMapper testMapper = new ModelMapper();
 		TypeMap<TaskDTO, Task> propertyMapper = testMapper.createTypeMap(TaskDTO.class, Task.class);
 
-		Converter<Long, Employee> ID2Employee = c -> employeeService.getEmployeeById(c.getSource());
+		Converter<Long, Employee> ID2Employee = c -> EmployeeUtil.getEmployeeById(c.getSource());
 
 		propertyMapper
 				.addMappings(mapping -> mapping.using(ID2Employee).map(TaskDTO::getEmployee_id, Task::setEmployee));
@@ -68,7 +69,7 @@ class CrudrestApplicationTests {
 		taskDTO.setDescription("description");
 		taskDTO.setEmployee_id(1L);
 
-		Employee employee = employeeService.getEmployeeById(1L);
+		Employee employee = EmployeeUtil.getEmployeeById(1L);
 
 		Task task = testMapper.map(taskDTO, Task.class);
 
@@ -92,7 +93,7 @@ class CrudrestApplicationTests {
 
 		propertyMapper.addMappings(
 				mapper -> mapper.map(src -> {
-					return employeeService.getEmployeeById(src.getEmployee_id());
+					return EmployeeUtil.getEmployeeById(src.getEmployee_id());
 				}, Task::setEmployee));
 
 		System.out.println("Second test - 2");
@@ -102,7 +103,7 @@ class CrudrestApplicationTests {
 		taskDTO.setDescription("description");
 		taskDTO.setEmployee_id(1L);
 
-		Employee employee = employeeService.getEmployeeById(1L);
+		Employee employee = EmployeeUtil.getEmployeeById(1L);
 
 		Task task = testMapper.map(taskDTO, Task.class);
 
@@ -118,7 +119,7 @@ class CrudrestApplicationTests {
 	public void task2taskDTO() {
 		Task task = new Task("title", "description");
 
-		Employee employee = employeeService.getEmployeeById(1L);
+		Employee employee = EmployeeUtil.getEmployeeById(1L);
 
 		task.setEmployee(employee);
 
@@ -139,7 +140,7 @@ class CrudrestApplicationTests {
 		taskDTO.setDescription("description");
 		taskDTO.setEmployee_id(1L);
 
-		Employee employee = employeeService.getEmployeeById(1L);
+		Employee employee = EmployeeUtil.getEmployeeById(1L);
 
 		Task task = modelMapper.map(taskDTO, Task.class);
 

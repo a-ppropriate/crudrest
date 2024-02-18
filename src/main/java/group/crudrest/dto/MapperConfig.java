@@ -4,19 +4,15 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.modelmapper.Converter;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import group.crudrest.model.Employee;
 import group.crudrest.model.Task;
-import group.crudrest.services.EmployeeService;
+import group.crudrest.utils.EmployeeUtil;
 
 @Configuration
 public class MapperConfig {
-
-    @Autowired
-    EmployeeService employeeService;
 
     @Bean
     ModelMapper getModelMapper() {
@@ -37,5 +33,5 @@ public class MapperConfig {
 
     }
 
-    private final Converter<Long, Employee> ID2Employee = c -> employeeService.getEmployeeById(c.getSource());
+    private final Converter<Long, Employee> ID2Employee = c -> EmployeeUtil.getEmployeeById(c.getSource());
 }
