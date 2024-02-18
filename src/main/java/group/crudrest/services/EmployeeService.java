@@ -2,10 +2,15 @@ package group.crudrest.services;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import group.crudrest.exceptions.EmployeeIsAlreadyAnOwnerException;
 import group.crudrest.model.Employee;
@@ -26,8 +31,13 @@ public class EmployeeService {
     @Autowired
     EmployeeAssistsInTaskRepository employeeAssistsInTaskRepository;
 
-    public List<Employee> getEmployees() {
-        return employeeRepository.findAll();
+    public Page<Employee> getEmployees(Optional<Integer> page_offset,
+            @RequestParam(name = "page_size") Optional<Integer> page_size) {
+
+        Pageable request = PageRequest.of(page_offset.orElse(0), page_size.orElse(5));
+        Page<Employee> allEmpl = employeeRepository.findAll(request);
+
+        return allEmpl;
     }
 
     public Employee getEmployee(Long id) {

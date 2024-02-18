@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 
 import group.crudrest.dto.EmployeeDTO;
 import group.crudrest.dto.TaskDTO;
@@ -46,6 +47,10 @@ public final class MappingUtil {
                 .stream()
                 .map(element -> modelMapper.map(element, targetClass))
                 .collect(Collectors.toList());
+    }
+
+    public static <S, T> Page<T> mapPage(Page<S> source, Class<T> targetClass) {
+        return source.map(element -> modelMapper.map(element, targetClass));
     }
 
 }

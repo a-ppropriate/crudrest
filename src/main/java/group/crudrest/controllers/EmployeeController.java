@@ -3,11 +3,13 @@ package group.crudrest.controllers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +22,7 @@ import group.crudrest.dto.TaskDTO;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 
@@ -32,8 +35,9 @@ class EmployeeController implements IEmployeeController {
   ModelMapper modelMapper;
 
   @Override
-  public List<EmployeeDTO> all() {
-    return MappingUtil.mapList(employeeService.getEmployees(), EmployeeDTO.class);
+  public Page<EmployeeDTO> all(@RequestParam(name = "page_offset") Optional<Integer> page_offset,
+      @RequestParam(name = "page_size") Optional<Integer> page_size) {
+    return MappingUtil.mapPage(employeeService.getEmployees(page_offset, page_size), EmployeeDTO.class);
   }
 
   @Override

@@ -1,13 +1,16 @@
 package group.crudrest.controllers.interfaces;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import group.crudrest.dto.EmployeeDTO;
@@ -21,8 +24,10 @@ import jakarta.validation.Valid;
 public interface IEmployeeController {
 
     @GetMapping("/employees")
-    @Operation(summary = "Full employees list", description = "lists employees")
-    List<EmployeeDTO> all();
+    @Operation(summary = "Paged employees list", description = "lists employees")
+
+    Page<EmployeeDTO> all(@RequestParam(name = "page_offset") Optional<Integer> page_offset,
+            @RequestParam(name = "page_size") Optional<Integer> page_size);
 
     @PostMapping("/employees")
     @Operation(summary = "Add employee")
