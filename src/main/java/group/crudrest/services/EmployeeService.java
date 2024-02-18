@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import group.crudrest.exceptions.EmployeeAssistsInTaskNotFound;
 import group.crudrest.exceptions.EmployeeIsAlreadyAnOwnerException;
 import group.crudrest.model.Employee;
 import group.crudrest.model.EmployeeAssistsInTask;
@@ -15,6 +14,7 @@ import group.crudrest.model.Task;
 import group.crudrest.model.composite_keys.EmployeeAssistsInTaskKey;
 import group.crudrest.repository.EmployeeAssistsInTaskRepository;
 import group.crudrest.repository.EmployeeRepository;
+import group.crudrest.utils.EmployeeAssistanceInTaskUtil;
 import group.crudrest.utils.EmployeeUtil;
 import group.crudrest.utils.TaskUtil;
 
@@ -25,17 +25,6 @@ public class EmployeeService {
 
     @Autowired
     EmployeeAssistsInTaskRepository employeeAssistsInTaskRepository;
-
-    @Autowired
-    TaskService taskService;
-
-    public EmployeeAssistsInTask getAssistanceById(EmployeeAssistsInTaskKey key) {
-        Objects.requireNonNull(key);
-        return employeeAssistsInTaskRepository.findById(key).orElseThrow(
-                () -> {
-                    throw new EmployeeAssistsInTaskNotFound(key);
-                });
-    }
 
     public List<Employee> getEmployees() {
         return employeeRepository.findAll();
@@ -92,7 +81,7 @@ public class EmployeeService {
 
     public void deleteAssistanceInTask(Long id, Long task_id) {
         EmployeeAssistsInTaskKey key = new EmployeeAssistsInTaskKey(id, task_id);
-        EmployeeAssistsInTask emp_assists_task = this.getAssistanceById(key);
+        EmployeeAssistsInTask emp_assists_task = EmployeeAssistanceInTaskUtil.getAssistanceById(key);
         Objects.requireNonNull(emp_assists_task);
         employeeAssistsInTaskRepository.delete(emp_assists_task);
     }
