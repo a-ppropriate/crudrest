@@ -39,9 +39,10 @@ public class Task {
     protected Task() {
     };
 
-    public Task(String title, String description) {
+    public Task(String title, String description, Employee employee) {
         this.title = title;
         this.description = description;
+        this.employee = employee;
     };
 
     @Override

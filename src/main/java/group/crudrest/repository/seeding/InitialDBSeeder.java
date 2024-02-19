@@ -69,8 +69,7 @@ public class InitialDBSeeder {
             String name = get_random_from_list(task_names) + " (" + i + ")";
             String description = "irrelevant";
             Employee employee = get_random_from_list(employees);
-            Task task = new Task(name, description);
-            task.setEmployee(employee);
+            Task task = new Task(name, description, employee);
 
             Task new_task = taskRepository.save(task);
             tasks.add(new_task);

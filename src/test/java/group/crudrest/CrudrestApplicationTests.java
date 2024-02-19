@@ -83,6 +83,7 @@ class CrudrestApplicationTests {
 
 	@Test
 	void modelmapper2() {
+		// FIXME: wtf?
 		// as shown in: https://www.baeldung.com/java-modelmapper p. 4.1
 		// fails with exception group.crudrest.exceptions.EmployeeNotFoundException:
 		// Could not find employee 0
@@ -117,11 +118,8 @@ class CrudrestApplicationTests {
 
 	@Test
 	public void task2taskDTO() {
-		Task task = new Task("title", "description");
-
 		Employee employee = EmployeeUtil.getEmployeeById(1L);
-
-		task.setEmployee(employee);
+		Task task = new Task("title", "description", employee);
 
 		TaskDTO taskDTO = modelMapper.map(task, TaskDTO.class);
 
@@ -162,7 +160,8 @@ class CrudrestApplicationTests {
 
 	@Test
 	public void UnexpectedBehaviourOnTaskTest() {
-		Task t = new Task("1", "1");
+		Employee e = null;
+		Task t = new Task("1", "1", e);
 
 		assertThrows(UnexpectedBehaviourException.class, () -> t.getEmployee_id(),
 				"A proper Task is not supposed to exist without employee: " + t.toString());
@@ -173,8 +172,7 @@ class CrudrestApplicationTests {
 		Employee employee = new Employee("a", "b", "ccc@cc.com");
 		Employee created_employee = employeeService.createEmployee(employee);
 
-		Task task = new Task("1", "1");
-		task.setEmployee(created_employee);
+		Task task = new Task("1", "1", created_employee);
 
 		Task created_task = taskRepository.save(task);
 		Long task_id = created_task.getId();
@@ -200,8 +198,7 @@ class CrudrestApplicationTests {
 			throw new UnexpectedBehaviourException("Something went horribly wrong");
 		}
 
-		Task task = new Task("1", "1");
-		task.setEmployee(created_owner_employee);
+		Task task = new Task("1", "1", created_owner_employee);
 
 		Task created_task = taskRepository.save(task);
 		Long task_id = created_task.getId();
@@ -242,8 +239,7 @@ class CrudrestApplicationTests {
 			throw new UnexpectedBehaviourException("Something went horribly wrong");
 		}
 
-		Task task = new Task("1", "1");
-		task.setEmployee(created_owner_employee);
+		Task task = new Task("1", "1", created_owner_employee);
 
 		Task created_task = taskRepository.save(task);
 		Long task_id = created_task.getId();
