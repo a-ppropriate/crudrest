@@ -1,4 +1,4 @@
-INSERT INTO employee (name,address,email) VALUES ('Jack','London','test@example.com');
+/*INSERT INTO employee (name,address,email) VALUES ('Jack','London','test@example.com');
 INSERT INTO employee (name,address,email) VALUES ('Jack 1','Paris','test@example.com');
 INSERT INTO employee (name,address,email) VALUES ('Jack 2','weee','test@example.com');
 INSERT INTO employee (name,address,email) VALUES ('Jack 3','qwe','test@example.com');
@@ -27,4 +27,4 @@ INSERT INTO employee_assists_in_task VALUES (1,8);
 
 INSERT INTO employee_assists_in_task VALUES (2,1);
 INSERT INTO employee_assists_in_task VALUES (3,1);
-INSERT INTO employee_assists_in_task VALUES (4,1);
+INSERT INTO employee_assists_in_task VALUES (4,1);*/
